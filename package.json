@@ -7,6 +7,9 @@
   "scripts": {
     "test": "npx jest --bail"
   },
+  "bin": {
+    "page-loader": "bin/loaderPackage.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LexaZ999/backend-project-lvl3.git"
@@ -23,6 +26,11 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.3",
     "jest": "^27.5.1",
-    "jest-cli": "^27.5.1"
+    "jest-cli": "^27.5.1",
+    "nock": "^13.2.4"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "commander": "^9.1.0"
   }
 }
