@@ -1,1 +1,3 @@
-export default (num1, num2) => num1 + num2;
+import pageLoader from './src/pageLoader.js';
+
+export default pageLoader;
