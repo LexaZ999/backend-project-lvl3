@@ -1,9 +1,15 @@
-const generateFilename = (link) => {
+import path from 'path';
+
+const generateFilename = (link, extension) => {
   const { hostname, pathname } = new URL(link);
-  const name = `${hostname}${pathname}`.replace(/.$/, '');
-  const newName = name.replace(/[\W_]/g, '-');
-  const extension = '.html';
-  return `${newName}${extension}`;
+  const { dir, name, ext } = path.parse(pathname);
+
+  const filename = path
+    .join(hostname, dir, name)
+    .replace(/\/$/, '')
+    .replace(/[\W_]/g, '-');
+
+  return `${filename}${extension || ext}`;
 };
 
 export default generateFilename;
