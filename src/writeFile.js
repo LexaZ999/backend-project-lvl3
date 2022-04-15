@@ -3,9 +3,9 @@ import getFilepath from './getFilepath.js';
 
 const writeFile = (data, filename, pathDir) => {
   const pathFile = getFilepath(filename, pathDir);
-  fs.writeFile(pathFile, data);
 
-  return pathFile;
+  return fs.writeFile(pathFile, data)
+    .then(() => pathFile);
 };
 
 export default writeFile;

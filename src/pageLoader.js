@@ -12,30 +12,25 @@ const pageLoader = (link, dir = process.cwd()) => {
   const dirname = generateFilename(link, '_files');
   const dirPath = getFilepath(dirname, dir);
 
-  fsp.mkdir(dirPath);
-
-  const pageHtml = axios.get(link)
-    .then((response) => response.data);
-
-  const pathImagesPromise = pageHtml.then((data) => {
-    const root = nhp.parse(data);
-    const elemImages = root.querySelectorAll('img');
-    const pathImages = elemImages
-      .map((el) => el.getAttribute('src')
-        .replace(/(^\.|\.\.)(\/)|(^\/)/g, ''));
-
-    return pathImages;
-  });
-
-  pathImagesPromise.then((pathImages) => {
-    pathImages.forEach((pathImg) => {
-      const urlImg = `${link.replace(/\/$/g, '')}/${pathImg}`;
-      downloadImg(urlImg, dirPath);
-    });
-  });
-
-  return pageHtml
-    .then((data) => writeFile(data, filename, dir));
+  return fsp.mkdir(dirPath)
+    .then(() => axios.get(link))
+    .then((response) => response.data)
+    .then((data) => {
+      const root = nhp.parse(data);
+      const elemImages = root.querySelectorAll('img');
+      const pathImages = elemImages
+        .map((el) => el.getAttribute('src')
+          .replace(/(^\.|\.\.)(\/)|(^\/)/g, ''));
+      return { data, pathImages };
+    })
+    .then(({ data, pathImages }) => {
+      const promises = pathImages.map((pathImg) => {
+        const urlImg = `${link.replace(/\/$/g, '')}/${pathImg}`;
+        return downloadImg(urlImg, dirPath);
+      });
+      return Promise.all([data, ...promises]);
+    })
+    .then(([data]) => writeFile(data, filename, dir));
 };
 
 export default pageLoader;
