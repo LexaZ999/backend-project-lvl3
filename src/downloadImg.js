@@ -11,7 +11,8 @@ const downloadImg = (url, dirname) => {
     url,
     responseType: 'stream',
   })
-    .then((res) => fsp.writeFile(path.join(dirname, filename), res.data));
+    .then((res) => fsp.writeFile(path.join(dirname, filename), res.data))
+    .then(() => filename);
 };
 
 export default downloadImg;
