@@ -16,8 +16,11 @@ beforeEach(async () => {
 
 test('fetchData', async () => {
   const url = 'https://ru.hexlet.io/courses';
+
   const filepath = getFilepath('page.html', '__fixtures__');
   const expected = await fsp.readFile(filepath, 'utf-8');
+  const sourcePagePath = getFilepath('newPage.html', '__fixtures__');
+  const sourcePage = await fsp.readFile(sourcePagePath, 'utf-8');
 
   const filepathLogo = getFilepath('logo.png', '__fixtures__');
   const expectedLogo = await fsp.readFile(filepathLogo);
@@ -38,7 +41,7 @@ test('fetchData', async () => {
   const regHtml = /\.html$/g;
   const htmlFile = dirContents.find((filename) => regHtml.test(filename));
   const content = await fsp.readFile(path.join(tempDir, htmlFile), 'utf-8');
-  expect(content).toBe(expected);
+  expect(content).toBe(sourcePage);
 
   const regFiles = /_files$/g;
   const dirnameFiles = dirContents.find((filename) => regFiles.test(filename));
