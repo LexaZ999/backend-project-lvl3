@@ -5,12 +5,11 @@ import path from 'path';
 import generateFilename from './generateFilename.js';
 import writeFile from './writeFile.js';
 import downloadImg from './downloadImg.js';
-import getFilepath from './getFilepath.js';
 
 const pageLoader = (link, dir = process.cwd()) => {
   const filename = generateFilename(link, '.html');
-  const dirname = generateFilename(link, '_files');
-  const dirPath = getFilepath(dirname, dir);
+  const nameDirForFiles = generateFilename(link, '_files');
+  const dirPath = path.resolve(process.cwd(), dir, nameDirForFiles);
 
   let root;
   let elemImages;
@@ -35,7 +34,7 @@ const pageLoader = (link, dir = process.cwd()) => {
       return Promise.all(newPathImges);
     })
     .then((newPathImges) => {
-      elemImages.forEach((el, index) => el.setAttribute('src', path.join(dirname, newPathImges[index])));
+      elemImages.forEach((el, index) => el.setAttribute('src', path.join(nameDirForFiles, newPathImges[index])));
       return root.toString();
     })
     .then((data) => writeFile(data, filename, dir));

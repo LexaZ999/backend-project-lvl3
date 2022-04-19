@@ -1,8 +1,8 @@
 import fs from 'fs/promises';
-import getFilepath from './getFilepath.js';
+import path from 'path';
 
 const writeFile = (data, filename, pathDir) => {
-  const pathFile = getFilepath(filename, pathDir);
+  const pathFile = path.resolve(process.cwd(), pathDir, filename);
 
   return fs.writeFile(pathFile, data)
     .then(() => pathFile);
