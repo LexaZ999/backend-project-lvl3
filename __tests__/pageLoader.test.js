@@ -16,16 +16,19 @@ beforeEach(async () => {
 
 test('fetchData', async () => {
   const url = 'https://ru.hexlet.io/courses';
-
   const filepath = getFilepath('page.html', '__fixtures__');
   const expected = await fsp.readFile(filepath, 'utf-8');
   const sourcePagePath = getFilepath('newPage.html', '__fixtures__');
   const sourcePage = await fsp.readFile(sourcePagePath, 'utf-8');
 
-  const filepathLogo = getFilepath('logo.png', '__fixtures__');
+  const filepathLogo = getFilepath('images/logo.png', '__fixtures__');
   const expectedLogo = await fsp.readFile(filepathLogo);
-  const filepathNodejs = getFilepath('nodejs.png', '__fixtures__');
+  const filepathNodejs = getFilepath('images/nodejs.png', '__fixtures__');
   const expectedNodejs = await fsp.readFile(filepathNodejs);
+  const appCssPath = getFilepath('styles/application.css', '__fixtures__');
+  const appCss = await fsp.readFile(appCssPath);
+  const runtimeScriptPath = getFilepath('scripts/runtime.js', '__fixtures__');
+  const runtimeScript = await fsp.readFile(runtimeScriptPath);
 
   nock('https://ru.hexlet.io')
     .get('/courses')
@@ -33,7 +36,11 @@ test('fetchData', async () => {
     .get('/courses/assets/professions/logo.png')
     .reply(200, expectedLogo)
     .get('/courses/assets/professions/nodejs.png')
-    .reply(200, expectedNodejs);
+    .reply(200, expectedNodejs)
+    .get('/courses/assets/application.css')
+    .reply(200, appCss)
+    .get('/packs/js/runtime.js')
+    .reply(200, runtimeScript);
 
   const dirContents = await pageLoader(url, tempDir)
     .then(() => fsp.readdir(tempDir));
@@ -55,4 +62,12 @@ test('fetchData', async () => {
   const includeContent2 = await fsp
     .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[1]));
   expect(includeContent2).toEqual(expectedNodejs);
+
+  const includeContent3 = await fsp
+    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[2]));
+  expect(includeContent3).toEqual(appCss);
+
+  const includeContent4 = await fsp
+    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[3]));
+  expect(includeContent4).toEqual(runtimeScript);
 });
