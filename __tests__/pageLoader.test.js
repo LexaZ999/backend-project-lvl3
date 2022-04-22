@@ -15,6 +15,7 @@ beforeEach(async () => {
 });
 
 test('fetchData', async () => {
+  console.log(tempDir);
   const url = 'https://ru.hexlet.io/courses';
   const filepath = getFilepath('page.html', '__fixtures__');
   const expected = await fsp.readFile(filepath, 'utf-8');
@@ -31,13 +32,15 @@ test('fetchData', async () => {
   const runtimeScript = await fsp.readFile(runtimeScriptPath);
 
   nock('https://ru.hexlet.io')
+    .persist()
     .get('/courses')
     .reply(200, expected)
-    .get('/courses/assets/professions/logo.png')
+    .persist()
+    .get('/assets/professions/logo.png')
     .reply(200, expectedLogo)
-    .get('/courses/assets/professions/nodejs.png')
+    .get('/assets/professions/nodejs.png')
     .reply(200, expectedNodejs)
-    .get('/courses/assets/application.css')
+    .get('/assets/application.css')
     .reply(200, appCss)
     .get('/packs/js/runtime.js')
     .reply(200, runtimeScript);
@@ -56,18 +59,18 @@ test('fetchData', async () => {
   const dirFilesContents = await fsp.readdir(path.join(tempDir, dirnameFiles));
 
   const includeContent1 = await fsp
-    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[0]));
+    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[1]));
   expect(includeContent1).toEqual(expectedLogo);
 
   const includeContent2 = await fsp
-    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[1]));
+    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[2]));
   expect(includeContent2).toEqual(expectedNodejs);
 
   const includeContent3 = await fsp
-    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[2]));
+    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[0]));
   expect(includeContent3).toEqual(appCss);
 
   const includeContent4 = await fsp
-    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[3]));
+    .readFile(path.join(tempDir, dirnameFiles, dirFilesContents[4]));
   expect(includeContent4).toEqual(runtimeScript);
 });
