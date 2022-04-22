@@ -6,3 +6,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/f80521c5e5f3404e93e3/maintainability)](https://codeclimate.com/github/LexaZ999/backend-project-lvl3/maintainability)
 
 [![asciicast](https://asciinema.org/a/l3uRlbWRrEDHEfVMQahqlFm8u.svg)](https://asciinema.org/a/l3uRlbWRrEDHEfVMQahqlFm8u)
+
+[![asciicast](https://asciinema.org/a/JEjcHUk83aFvyNPY71MbWoc6D.svg)](https://asciinema.org/a/JEjcHUk83aFvyNPY71MbWoc6D)
