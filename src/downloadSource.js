@@ -3,7 +3,7 @@ import fsp from 'fs/promises';
 import path from 'path';
 import generateFilename from './generateFilename.js';
 
-const downloadImg = (url, dirname) => {
+const downloadSource = (url, dirname) => {
   const filename = generateFilename(url);
 
   return axios({
@@ -15,4 +15,4 @@ const downloadImg = (url, dirname) => {
     .then(() => filename);
 };
 
-export default downloadImg;
+export default downloadSource;

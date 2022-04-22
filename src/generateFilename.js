@@ -9,7 +9,7 @@ const generateFilename = (link, extension) => {
     .replace(/\/$/, '')
     .replace(/[\W_]/g, '-');
 
-  return `${filename}${extension || ext}`;
+  return `${filename}${extension || ext || '.html'}`;
 };
 
 export default generateFilename;
